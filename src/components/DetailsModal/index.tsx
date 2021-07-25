@@ -1,5 +1,5 @@
 // Core
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Modal, Button } from 'antd';
 import { CloseOutlined } from '@ant-design/icons';
 
@@ -9,6 +9,7 @@ import AppLoader from '../Loader';
 
 // Type
 import { dataSetType, Props } from './types';
+import { FontSizes, FontWeights } from '../../utils/types/enums';
 
 // Styles
 import { ItemWrapper, LoaderWrapper } from './styles';
@@ -16,18 +17,38 @@ import colors from '../../assets/styles/colors';
 
 // Others
 import { getLocationAndOrigin, getEpisodeDetails } from './helper'
-import { FontSizes, FontWeights } from '../../utils/types/enums';
-
+import { store } from '../../store/index';
+import { TOGGLE_MODAL } from '../../config/action';
 
 const DetailsModal: React.FC<Props> = (props: Props) => {
-  const { showModal, location, name, episode, origin, toggleModalHandler } = props;
   const [loading, updateLoading] = useState<boolean>(true);
   const [dataSet, setDataSet] = useState<dataSetType>({
     locationDetails: {},
     originDetails: {},
     episodeList: []
   })
-  const toggleModal = () => toggleModalHandler();
+
+  // get global store using context hook
+  const globalState = useContext(store);
+  const { state, dispatch } = globalState;
+  const {
+    modalData: {
+      location,
+      name,
+      episode,
+      origin,
+      showModal
+    }
+  } = state;
+
+  const toggleModal = () => {
+    dispatch({
+      type: TOGGLE_MODAL,
+      data: {
+        showModal: false,
+      },
+    });
+  };
 
   useEffect(() => {
     const fetchInitialData = async () => {

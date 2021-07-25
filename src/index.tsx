@@ -1,9 +1,12 @@
 import ReactDOM from 'react-dom';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { StateProvider } from './store/index';
 
 ReactDOM.render(
-  <App />,
+  <StateProvider>
+    <App />
+  </StateProvider>,
   document.getElementById('root')
 );
 

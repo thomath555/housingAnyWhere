@@ -1,5 +1,3 @@
-import { basicInfoType } from "../../utils/types/globalTypes";
-
 export interface LocationOriginDetails {
   dimension: string;
   name: string;
@@ -13,11 +11,4 @@ export type dataSetType = {
   episodeList: Array<string>;
 };
 
-export type Props = {
-  showModal: boolean;
-  location: basicInfoType;
-  name: string;
-  origin: basicInfoType;
-  episode: Array<string>;
-  toggleModalHandler: () => void;
-};
+export type Props = {};

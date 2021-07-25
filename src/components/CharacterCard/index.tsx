@@ -1,14 +1,17 @@
 // Core
-import React, { useState } from 'react';
+import React, { useContext } from 'react';
 import colors from '../../assets/styles/colors';
 import { FontSizes, FontWeights } from '../../utils/types/enums';
 
 // Components
-import DetailsModal from '../DetailsModal'
 import Label from '../Label';
 
 // Styles
 import { Wrapper, ImgWrapper, ContentWrapper, StatusLabel, ViewMore } from './styles'
+
+// Others
+import { store } from '../../store/index';
+import { TOGGLE_MODAL } from '../../config/action';
 
 // Types
 import { Props } from './types'
@@ -16,7 +19,6 @@ import { Props } from './types'
 const CharacterCard: React.FC<Props> = (props: Props) => {
     const ALIVE = 'Alive';
     const { dataSet } = props;
-    const [showModal, updateShowModal] = useState<boolean>(false);
     const {
         location,
         name,
@@ -29,8 +31,20 @@ const CharacterCard: React.FC<Props> = (props: Props) => {
         gender
     } = dataSet;
 
+    // get global store using context hook
+    const globalState = useContext(store);
+    const { dispatch } = globalState;
     const onClickHandle = () => {
-        updateShowModal(prev => !prev)
+        dispatch({
+            type: TOGGLE_MODAL,
+            data: {
+                showModal: true,
+                location,
+                name,
+                origin,
+                episode
+            },
+        });
     }
 
     const isAlive = status === ALIVE;
@@ -67,15 +81,6 @@ const CharacterCard: React.FC<Props> = (props: Props) => {
                     color={colors.white}
                 />
                 <ViewMore onClick={onClickHandle}>More Info</ViewMore>
-                {showModal && <DetailsModal {...{
-                    showModal,
-                    location,
-                    name,
-                    origin,
-                    episode,
-                    toggleModalHandler: onClickHandle
-                }}
-                />}
             </ContentWrapper>
         </Wrapper>
     )
