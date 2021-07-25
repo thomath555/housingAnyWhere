@@ -1,9 +1,12 @@
-import React from 'react';
-import { render, screen } from '@testing-library/react';
-import App from './App';
+// Core
+import { shallow } from 'enzyme';
 
-test('renders learn react link', () => {
-  render(<App />);
-  const linkElement = screen.getByText(/learn react/i);
-  expect(linkElement).toBeInTheDocument();
+// Components
+import App from './App';
+import Routes from './routes';
+
+it('should render the Routes', () => {
+  const wrapper = shallow(<App />)
+  const router = wrapper.find(Routes)
+  expect(router.exists()).toBe(true);
 });
